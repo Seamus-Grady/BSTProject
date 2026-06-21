@@ -17,16 +17,30 @@ public class BSTTest {
     }
 
     @Test
-    public void testInsert() {
+    public void testInsertRoot() {
         test.insert(10);
-        assertNotNull(test.search(10));
+        assertEquals(1, test.count());
+    }
+
+    @Test
+    public void testInsertLeft() {
+        test.insert(5);
+        test.insert(1);
+        assertEquals(2, test.count());
+    }
+
+    @Test
+    public void testInsertRight() {
+        test.insert(5);
+        test.insert(10);
+        assertEquals(2, test.count());
     }
 
     @Test
     public void testInsertNoDuplicate() {
         test.insert(10);
         test.insert(10);
-        //assertEquals(1, test.count());
+        assertEquals(1, test.count());
     }
 
     @Test

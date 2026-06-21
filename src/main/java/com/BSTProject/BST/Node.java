@@ -5,6 +5,10 @@ public class Node {
     private Node right;
     private int value;
 
+    public Node(int value) {
+        this(null, null, value);
+    }
+
     public Node(Node left, Node right, int value) {
         this.left = left;
         this.right = right;
