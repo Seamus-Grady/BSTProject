@@ -15,6 +15,10 @@ public class BST {
         return searchRecursive(value, root);
     }
 
+    public int count() {
+        return countRecursive(root);
+    }
+
     private void insertRecursive(int value, Node node) {
         if(node == null) {
             this.root = new Node(value);
@@ -43,6 +47,14 @@ public class BST {
         }
 
         return null;
+    }
+
+    private int countRecursive(Node node) {
+        if(node == null) {
+            return 0;
+        }
+
+        return countRecursive(node.getLeft()) + 1 + countRecursive(node.getRight());
     }
 
     private boolean isLeaf(Node node) {
