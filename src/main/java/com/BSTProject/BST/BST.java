@@ -22,20 +22,29 @@ public class BST {
     private void insertRecursive(int value, Node node) {
         if(node == null) {
             this.root = new Node(value);
+            return;
         }
 
         if(value < node.getValue()) {
-            insertOrTraverse(value, node, node.getLeft());            
+            if(isLeaf(node)) {
+                node.setLeft(new Node(value));
+            } else {
+                insertRecursive(value, node.getLeft());   
+            }         
         }
         else if (value > node.getValue()) {
-            insertOrTraverse(value, node, node.getRight());
+            if(isLeaf(node)) {
+                node.setRight(new Node(value));
+            } else {
+                insertRecursive(value, node.getRight());
+            }
         }
     }
 
     private Node searchRecursive(int value, Node node) {
         if(node == null) {
             return null;
-        } else if(node != null && value == node.getValue()) {
+        } else if(value == node.getValue()) {
             return node;
         }
 
@@ -59,13 +68,5 @@ public class BST {
 
     private boolean isLeaf(Node node) {
         return node.getLeft() == null && node.getRight() == null;
-    }
-
-    private void insertOrTraverse(int value, Node current, Node next) {
-        if(isLeaf(current)) {
-            current.setRight(new Node(value));
-        } else {
-            insertRecursive(value, next);
-        }
     }
 }
