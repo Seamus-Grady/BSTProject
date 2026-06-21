@@ -53,4 +53,9 @@ public class BSTTest {
     public void testSearchWithNoValueinBST() {
         assertNull(test.search(10));
     }
+
+    @Test
+    public void testCountEmptyBST() {
+        assertEquals(0, test.count());
+    }
 }
