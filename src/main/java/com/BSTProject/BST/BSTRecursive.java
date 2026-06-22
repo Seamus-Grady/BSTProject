@@ -28,14 +28,11 @@ public class BSTRecursive {
             return node;
         }
 
-        if(value < node.getValue()) {
+        if(isLeftChild(value, node)) {
            return searchRecursive(value, node.getLeft());
-        }
-        else if (value > node.getValue()) {
+        } else {
            return searchRecursive(value, node.getRight());
         }
-
-        return null;
     }
 
     public Node deleteRecursive(int value, Node current, Node previous) {
@@ -44,9 +41,9 @@ public class BSTRecursive {
         }
         if(value == current.getValue()) {
             if(isLeaf(current)) {
-                if(value < previous.getValue()) {
+                if(isLeftChild(value, previous)) {
                     previous.setLeft(null);
-                } else if (value > previous.getValue()) {
+                } else {
                     previous.setRight(null);
                 }
                 return current;
@@ -66,6 +63,10 @@ public class BSTRecursive {
 
     private boolean isLeaf(Node node) {
         return node.getLeft() == null && node.getRight() == null;
+    }
+
+    private boolean isLeftChild(int value, Node node) {
+        return value != node.getValue() && value < node.getValue();
     }
     
 }
