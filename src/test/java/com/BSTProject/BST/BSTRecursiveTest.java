@@ -131,4 +131,33 @@ public class BSTRecursiveTest {
         assertNotNull(result);
         assertEquals(8, result.getValue());
     }
+
+    @Test
+    public void testDeleteWithNullCurrentNode() { 
+        Node result = this.testBstRecursive.deleteRecursive(5, null, this.testRootNode);
+
+        assertNull(result);
+    }
+
+    @Test
+    public void testDeleteWithLeftLeafNode() {
+        this.testRootNode.setLeft(new Node(3));
+        
+        Node result = this.testBstRecursive.deleteRecursive(3, testRootNode.getLeft(), testRootNode);
+
+        assertNotNull(result);
+        assertEquals(3, result.getValue());
+        assertEquals(1, this.testBstRecursive.countRecursive(this.testRootNode));
+    }
+
+    @Test
+    public void testDeleteWithRightLeafNode() {
+        this.testRootNode.setRight(new Node(10));
+        
+        Node result = this.testBstRecursive.deleteRecursive(10, testRootNode.getRight(), testRootNode);
+
+        assertNotNull(result);
+        assertEquals(10, result.getValue());
+        assertEquals(1, this.testBstRecursive.countRecursive(this.testRootNode));
+    }
 }

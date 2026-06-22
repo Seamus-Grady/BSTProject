@@ -38,6 +38,24 @@ public class BSTRecursive {
         return null;
     }
 
+    public Node deleteRecursive(int value, Node current, Node previous) {
+        if(current == null) {
+            return null;
+        }
+        if(value == current.getValue()) {
+            if(isLeaf(current)) {
+                if(value < previous.getValue()) {
+                    previous.setLeft(null);
+                } else if (value > previous.getValue()) {
+                    previous.setRight(null);
+                }
+                return current;
+            }
+        }
+
+        return null;
+    }
+
     public int countRecursive(Node node) {
         if(node == null) {
             return 0;
