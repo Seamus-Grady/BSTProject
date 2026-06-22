@@ -28,7 +28,7 @@ public class BSTRecursive {
             return node;
         }
 
-        if(isLeftChild(value, node)) {
+        if(isValueLessThanNodeValue(value, node)) {
            return searchRecursive(value, node.getLeft());
         } else {
            return searchRecursive(value, node.getRight());
@@ -41,16 +41,33 @@ public class BSTRecursive {
         }
         if(value == current.getValue()) {
             if(isLeaf(current)) {
-                if(isLeftChild(value, previous)) {
+                if(isValueLessThanNodeValue(value, previous)) {
                     previous.setLeft(null);
                 } else {
                     previous.setRight(null);
                 }
-                return current;
-            }
+            } else if(hasOnlyOneChild(current)) {
+                Node nodeToSet;
+                if(current.getLeft() != null) {
+                    nodeToSet = current.getLeft();
+                } else {
+                    nodeToSet = current.getRight();
+                }
+
+                if(isValueLessThanNodeValue(value, previous)) {
+                    previous.setLeft(nodeToSet);
+                } else {
+                    previous.setRight(nodeToSet);
+                }
+            } 
+            return current;
         }
 
-        return null;
+        if(isValueLessThanNodeValue(value, previous)) {
+            return deleteRecursive(value, current.getLeft(), current);
+        } else {
+            return deleteRecursive(value, current.getRight(), current);        
+        }
     }
 
     public int countRecursive(Node node) {
@@ -65,7 +82,11 @@ public class BSTRecursive {
         return node.getLeft() == null && node.getRight() == null;
     }
 
-    private boolean isLeftChild(int value, Node node) {
+    private boolean hasOnlyOneChild(Node node) { 
+        return (node.getLeft() == null) ^ (node.getRight() == null);
+    }
+
+    private boolean isValueLessThanNodeValue(int value, Node node) {
         return value != node.getValue() && value < node.getValue();
     }
     
