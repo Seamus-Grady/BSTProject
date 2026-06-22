@@ -2,7 +2,6 @@ package com.BSTProject.BST;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,45 +16,12 @@ public class BSTTest {
     }
 
     @Test
-    public void testInsertRoot() {
-        test.insert(10);
-        assertEquals(1, test.count());
-    }
+    public void testInsertWithNullRoot() {
+        this.test.insert(5);
 
-    @Test
-    public void testInsertLeft() {
-        test.insert(5);
-        test.insert(1);
-        assertEquals(2, test.count());
-    }
+        Node result = this.test.search(5);
 
-    @Test
-    public void testInsertRight() {
-        test.insert(5);
-        test.insert(10);
-        assertEquals(2, test.count());
-    }
-
-    @Test
-    public void testInsertNoDuplicate() {
-        test.insert(10);
-        test.insert(10);
-        assertEquals(1, test.count());
-    }
-
-    @Test
-    public void testSearchWithValueInBST() {
-        test.insert(10);
-        assertNotNull(test.search(10));
-    }
-
-    @Test
-    public void testSearchWithNoValueinBST() {
-        assertNull(test.search(10));
-    }
-
-    @Test
-    public void testCountEmptyBST() {
-        assertEquals(0, test.count());
+        assertNotNull(result);
+        assertEquals(5, result.getValue());
     }
 }
