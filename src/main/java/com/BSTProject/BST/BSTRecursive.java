@@ -61,19 +61,21 @@ public class BSTRecursive {
                 }
             } else {
                 Node nodeToDelete;
-                if(current.getRight() != null && current.getLeft() == null) {
+                if(current.getRight() != null && current.getRight().getLeft() == null) {
                     nodeToDelete = current.getRight();
                     current.setRight(current.getRight().getRight());
                 } else {
                     nodeToDelete = findAndDeleteMinNodeInRightTree(current.getRight(), current);
                 }
+                int newValue = current.getValue();
                 current.setValue(nodeToDelete.getValue());
+                nodeToDelete.setValue(newValue);
                 return nodeToDelete;
             } 
             return current;
         }
 
-        if(isValueLessThanNodeValue(value, previous)) {
+        if(isValueLessThanNodeValue(value, current)) {
             return deleteRecursive(value, current.getLeft(), current);
         } else {
             return deleteRecursive(value, current.getRight(), current);        
