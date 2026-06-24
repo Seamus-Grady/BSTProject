@@ -18,6 +18,10 @@ public class BST {
         this.bstRecursive.insertRecursive(value, root);
     }
 
+    public Node delete(int value) {
+        return this.bstRecursive.deleteRecursive(value, root, null);
+    }
+
     public Node search(int value) {
         return this.bstRecursive.searchRecursive(value, root);
     }

@@ -139,6 +139,13 @@ public class BSTRecursiveTest {
     }
 
     @Test
+    public void testDeleteWithValueNotInTree() {
+        Node result = this.testBstRecursive.deleteRecursive(6, testRootNode, null);
+
+        assertNull(result);
+    }
+
+    @Test
     public void testDeleteWithLeftLeafNode() {
         this.testRootNode.setLeft(new Node(3));
         
