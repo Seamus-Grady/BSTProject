@@ -6,14 +6,14 @@ public class BSTRecursive {
 
     public void insertRecursive(int value, Node node) {
         if(value < node.getValue()) {
-            if(isLeaf(node)) {
+            if(node.getLeft() == null) {
                 node.setLeft(new Node(value));
             } else {
                 insertRecursive(value, node.getLeft());   
             }         
         }
         else if (value > node.getValue()) {
-            if(isLeaf(node)) {
+            if(node.getRight() == null) {
                 node.setRight(new Node(value));
             } else {
                 insertRecursive(value, node.getRight());
@@ -59,6 +59,16 @@ public class BSTRecursive {
                 } else {
                     previous.setRight(nodeToSet);
                 }
+            } else {
+                Node nodeToDelete;
+                if(current.getRight() != null && current.getLeft() == null) {
+                    nodeToDelete = current.getRight();
+                    current.setRight(current.getRight().getRight());
+                } else {
+                    nodeToDelete = findAndDeleteMinNodeInRightTree(current.getRight(), current);
+                }
+                current.setValue(nodeToDelete.getValue());
+                return nodeToDelete;
             } 
             return current;
         }
@@ -88,6 +98,15 @@ public class BSTRecursive {
 
     private boolean isValueLessThanNodeValue(int value, Node node) {
         return value != node.getValue() && value < node.getValue();
+    }
+
+    private Node findAndDeleteMinNodeInRightTree(Node current, Node previous) {
+        if(current.getLeft() == null) {
+            previous.setLeft(current.getRight());
+            return current;
+        } else {
+            return findAndDeleteMinNodeInRightTree(current.getLeft(), current);
+        }
     }
     
 }
