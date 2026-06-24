@@ -1,6 +1,6 @@
 package com.BSTProject.BST;
 
-public class BSTRecursive {
+class BSTRecursive {
     
     public BSTRecursive() {}
 
