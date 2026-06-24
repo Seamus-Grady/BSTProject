@@ -31,11 +31,7 @@ public class BSTRecursive {
             return node;
         }
 
-        if(isValueLessThanNodeValue(value, node)) {
-           return searchRecursive(value, node.getLeft());
-        } else {
-           return searchRecursive(value, node.getRight());
-        }
+        return isValueLessThanNodeValue(value, node)? searchRecursive(value, node.getLeft()) : searchRecursive(value, node.getRight());
     }
 
     public Node deleteRecursive(int value, Node current, Node previous) {

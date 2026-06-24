@@ -113,7 +113,7 @@ public class BSTRecursiveTest {
 
     @Test
     public void testSearchRecursiveLeftNodeWithValue() {
-        this.testRootNode.setLeft(new Node(1));
+        this.testBstRecursive.insertRecursive(1, testRootNode);
 
         Node result = this.testBstRecursive.searchRecursive(1, this.testRootNode);
 
@@ -123,7 +123,7 @@ public class BSTRecursiveTest {
 
     @Test
     public void testSearchRecursiveRightNodeWithValue() {
-        this.testRootNode.setRight(new Node(10));
+        this.testBstRecursive.insertRecursive(10, testRootNode);
 
         Node result = this.testBstRecursive.searchRecursive(10, this.testRootNode);
 
