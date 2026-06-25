@@ -14,6 +14,16 @@ group = 'com.BSTProject'
 version = '1.0.0'
 
 publishing {
+    repositories {
+        maven {
+            name= 'github'
+            url= 'https://maven.pkg.github.com/Seamus-Grady/BSTProject'
+            credentials {
+                username = 'Seamus-Grady'
+                password = System.getenv('GITHUB_PUBLISHING_TOKEN')
+            }
+        }
+    }
     publications {
         mavenJava(MavenPublication) {
             artifactId = 'bst'
