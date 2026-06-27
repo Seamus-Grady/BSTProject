@@ -4,80 +4,89 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import com.BSTProject.Node.BSTNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class BSTRecursiveTest {
     BSTRecursive testBstRecursive;
-    Node testRootNode;
+    BSTNode testRootBSTNode;
 
     @BeforeEach
     public void setUp() {
         this.testBstRecursive = new BSTRecursive();
-        this.testRootNode = new Node(5);
+        this.testRootBSTNode = new BSTNode(5);
     }
 
     @Test
     public void testInsertLeftLeaf() {
-        this.testBstRecursive.insertRecursive(3, this.testRootNode);
+        this.testBstRecursive.insertRecursive(3, this.testRootBSTNode);
 
-        assertEquals(3, this.testRootNode.getLeft().getValue());
+        assertEquals(3, this.testRootBSTNode.getLeft().getValue());
     }
 
     @Test
     public void testInsertLeftWithLeftChild() {
-        this.testBstRecursive.insertRecursive(3, this.testRootNode);
-        this.testBstRecursive.insertRecursive(1, this.testRootNode);
+        this.testBstRecursive.insertRecursive(3, this.testRootBSTNode);
+        this.testBstRecursive.insertRecursive(1, this.testRootBSTNode);
 
-        assertEquals(1, this.testRootNode.getLeft().getLeft().getValue());
+        assertEquals(1, this.testRootBSTNode.getLeft().getLeft().getValue());
+        assertEquals(3, this.testRootBSTNode.getLeft().getLeft().getParent().getValue());
     }
 
     @Test
     public void testInsertRightLeaf() {
-        this.testBstRecursive.insertRecursive(10, this.testRootNode);
+        this.testBstRecursive.insertRecursive(10, this.testRootBSTNode);
 
-        assertEquals(10, this.testRootNode.getRight().getValue());
+        assertEquals(10, this.testRootBSTNode.getRight().getValue());
     }
 
     @Test
     public void testInsertRightWithRightChild() {
-        this.testBstRecursive.insertRecursive(8, this.testRootNode);
-        this.testBstRecursive.insertRecursive(10, this.testRootNode);
+        this.testBstRecursive.insertRecursive(8, this.testRootBSTNode);
+        this.testBstRecursive.insertRecursive(10, this.testRootBSTNode);
 
-        assertEquals(10, this.testRootNode.getRight().getRight().getValue());
+        assertEquals(10, this.testRootBSTNode.getRight().getRight().getValue());
+        assertEquals(8, this.testRootBSTNode.getRight().getRight().getParent().getValue());
     }
 
     @Test
     public void testInsertRightWithLeftChild() {
-        this.testBstRecursive.insertRecursive(1, this.testRootNode);
-        this.testBstRecursive.insertRecursive(3, this.testRootNode);
+        this.testBstRecursive.insertRecursive(1, this.testRootBSTNode);
+        this.testBstRecursive.insertRecursive(3, this.testRootBSTNode);
 
-        assertEquals(3, this.testRootNode.getLeft().getRight().getValue());
+        assertEquals(3, this.testRootBSTNode.getLeft().getRight().getValue());
+        assertEquals(1, this.testRootBSTNode.getLeft().getRight().getParent().getValue());
     }
 
     @Test
     public void testInsertWithTwoChildren() {
-        this.testBstRecursive.insertRecursive(3, testRootNode);
-        this.testBstRecursive.insertRecursive(10, testRootNode);
+        this.testBstRecursive.insertRecursive(3, testRootBSTNode);
+        this.testBstRecursive.insertRecursive(10, testRootBSTNode);
 
-        assertEquals(5, this.testRootNode.getValue());
-        assertEquals(3, this.testRootNode.getLeft().getValue());
-        assertEquals(10, this.testRootNode.getRight().getValue());
+        assertEquals(5, this.testRootBSTNode.getValue());
+        assertEquals(3, this.testRootBSTNode.getLeft().getValue());
+        assertEquals(10, this.testRootBSTNode.getRight().getValue());
+        assertEquals(5, this.testRootBSTNode.getLeft().getParent().getValue());
+        assertEquals(5, this.testRootBSTNode.getRight().getParent().getValue());
     }
 
     @Test
     public void testInsertLeftWithRightChild() {
-        this.testBstRecursive.insertRecursive(10, this.testRootNode);
-        this.testBstRecursive.insertRecursive(8, this.testRootNode);
+        this.testBstRecursive.insertRecursive(10, this.testRootBSTNode);
+        this.testBstRecursive.insertRecursive(8, this.testRootBSTNode);
 
-        assertEquals(8, this.testRootNode.getRight().getLeft().getValue());
+        assertEquals(8, this.testRootBSTNode.getRight().getLeft().getValue());
+        assertEquals(10, this.testRootBSTNode.getRight().getLeft().getParent().getValue());
     }
 
     @Test
     public void testInsertNoDuplicate() {
-        this.testBstRecursive.insertRecursive(5, testRootNode);
+        this.testBstRecursive.insertRecursive(1, testRootBSTNode);
+        this.testBstRecursive.insertRecursive(1, testRootBSTNode);
 
-        assertEquals(1, this.testBstRecursive.countRecursive(testRootNode));
+
+        assertEquals(2, this.testBstRecursive.countRecursive(testRootBSTNode));
     }
 
     @Test
@@ -87,10 +96,10 @@ public class BSTRecursiveTest {
 
     @Test
     public void testCountLeftAndRight() {
-        this.testBstRecursive.insertRecursive(10, testRootNode);
-        this.testBstRecursive.insertRecursive(1, testRootNode);
+        this.testBstRecursive.insertRecursive(10, testRootBSTNode);
+        this.testBstRecursive.insertRecursive(1, testRootBSTNode);
 
-        assertEquals(3, testBstRecursive.countRecursive(this.testRootNode));
+        assertEquals(3, testBstRecursive.countRecursive(this.testRootBSTNode));
     }
 
     @Test
@@ -100,7 +109,7 @@ public class BSTRecursiveTest {
 
     @Test
     public void testSearchRecursiveNodeWithValue() {
-        Node result = this.testBstRecursive.searchRecursive(5, this.testRootNode);
+        BSTNode result = this.testBstRecursive.searchRecursive(5, this.testRootBSTNode);
 
         assertNotNull(result);
         assertEquals(5, result.getValue());
@@ -108,14 +117,14 @@ public class BSTRecursiveTest {
 
     @Test
     public void testSearchRecursiveNodeWithoutValue() {
-        assertNull(this.testBstRecursive.searchRecursive(3, this.testRootNode));
+        assertNull(this.testBstRecursive.searchRecursive(3, this.testRootBSTNode));
     }
 
     @Test
     public void testSearchRecursiveLeftNodeWithValue() {
-        this.testBstRecursive.insertRecursive(1, testRootNode);
+        this.testBstRecursive.insertRecursive(1, testRootBSTNode);
 
-        Node result = this.testBstRecursive.searchRecursive(1, this.testRootNode);
+        BSTNode result = this.testBstRecursive.searchRecursive(1, this.testRootBSTNode);
 
         assertNotNull(result);
         assertEquals(1, result.getValue());
@@ -123,9 +132,9 @@ public class BSTRecursiveTest {
 
     @Test
     public void testSearchRecursiveRightNodeWithValue() {
-        this.testBstRecursive.insertRecursive(10, testRootNode);
+        this.testBstRecursive.insertRecursive(10, testRootBSTNode);
 
-        Node result = this.testBstRecursive.searchRecursive(10, this.testRootNode);
+        BSTNode result = this.testBstRecursive.searchRecursive(10, this.testRootBSTNode);
 
         assertNotNull(result);
         assertEquals(10, result.getValue());
@@ -133,124 +142,124 @@ public class BSTRecursiveTest {
 
     @Test
     public void testDeleteWithNullCurrentNode() { 
-        Node result = this.testBstRecursive.deleteRecursive(5, null, this.testRootNode);
+        BSTNode result = this.testBstRecursive.deleteRecursive(5, null, this.testRootBSTNode);
 
         assertNull(result);
     }
 
     @Test
     public void testDeleteWithValueNotInTree() {
-        Node result = this.testBstRecursive.deleteRecursive(6, testRootNode, null);
+        BSTNode result = this.testBstRecursive.deleteRecursive(6, testRootBSTNode, null);
 
         assertNull(result);
     }
 
     @Test
     public void testDeleteWithLeftLeafNode() {
-        this.testRootNode.setLeft(new Node(3));
+        this.testRootBSTNode.setLeft(new BSTNode(3));
         
-        Node result = this.testBstRecursive.deleteRecursive(3, testRootNode.getLeft(), testRootNode);
+        BSTNode result = this.testBstRecursive.deleteRecursive(3, testRootBSTNode.getLeft(), testRootBSTNode);
 
         assertNotNull(result);
         assertEquals(3, result.getValue());
-        assertEquals(1, this.testBstRecursive.countRecursive(this.testRootNode));
+        assertEquals(1, this.testBstRecursive.countRecursive(this.testRootBSTNode));
     }
 
     @Test
     public void testDeleteWithRightLeafNode() {
-        this.testRootNode.setRight(new Node(10));
+        this.testRootBSTNode.setRight(new BSTNode(10));
         
-        Node result = this.testBstRecursive.deleteRecursive(10, testRootNode.getRight(), testRootNode);
+        BSTNode result = this.testBstRecursive.deleteRecursive(10, testRootBSTNode.getRight(), testRootBSTNode);
 
         assertNotNull(result);
         assertEquals(10, result.getValue());
-        assertEquals(1, this.testBstRecursive.countRecursive(this.testRootNode));
+        assertEquals(1, this.testBstRecursive.countRecursive(this.testRootBSTNode));
     }
 
     @Test
     public void testDeleteWithLeftChildAndNoRightChildLeftNode() {
-        this.testRootNode.setLeft(new Node(3));
-        this.testRootNode.getLeft().setLeft(new Node(1));
+        this.testRootBSTNode.setLeft(new BSTNode(3));
+        this.testRootBSTNode.getLeft().setLeft(new BSTNode(1));
 
-        Node result = this.testBstRecursive.deleteRecursive(3, testRootNode.getLeft(), testRootNode);
+        BSTNode result = this.testBstRecursive.deleteRecursive(3, testRootBSTNode.getLeft(), testRootBSTNode);
 
         assertNotNull(result);
         assertEquals(3, result.getValue());
-        assertEquals(2, this.testBstRecursive.countRecursive(this.testRootNode));
-        assertEquals(1, this.testRootNode.getLeft().getValue());
+        assertEquals(2, this.testBstRecursive.countRecursive(this.testRootBSTNode));
+        assertEquals(1, this.testRootBSTNode.getLeft().getValue());
     }
 
     @Test
     public void testDeleteWithLeftChildAndNoRightChildRightNode() {
-        this.testRootNode.setRight(new Node(8));
-        this.testRootNode.getRight().setLeft(new Node(7));
+        this.testRootBSTNode.setRight(new BSTNode(8));
+        this.testRootBSTNode.getRight().setLeft(new BSTNode(7));
 
-        Node result = this.testBstRecursive.deleteRecursive(8, testRootNode.getRight(), testRootNode);
+        BSTNode result = this.testBstRecursive.deleteRecursive(8, testRootBSTNode.getRight(), testRootBSTNode);
 
         assertNotNull(result);
         assertEquals(8, result.getValue());
-        assertEquals(2, this.testBstRecursive.countRecursive(this.testRootNode));
-        assertEquals(7, this.testRootNode.getRight().getValue());
+        assertEquals(2, this.testBstRecursive.countRecursive(this.testRootBSTNode));
+        assertEquals(7, this.testRootBSTNode.getRight().getValue());
     }
 
     @Test
     public void testDeleteWithRightChildAndNoLeftChildRightNode() {
-        this.testRootNode.setRight(new Node(7));
-        this.testRootNode.getRight().setRight(new Node(10));
+        this.testRootBSTNode.setRight(new BSTNode(7));
+        this.testRootBSTNode.getRight().setRight(new BSTNode(10));
 
-        Node result = this.testBstRecursive.deleteRecursive(7, testRootNode.getRight(), testRootNode);
+        BSTNode result = this.testBstRecursive.deleteRecursive(7, testRootBSTNode.getRight(), testRootBSTNode);
 
         assertNotNull(result);
         assertEquals(7, result.getValue());
-        assertEquals(2, this.testBstRecursive.countRecursive(this.testRootNode));
-        assertEquals(10, this.testRootNode.getRight().getValue());
+        assertEquals(2, this.testBstRecursive.countRecursive(this.testRootBSTNode));
+        assertEquals(10, this.testRootBSTNode.getRight().getValue());
     }
 
     @Test
     public void testDeleteWithRightChildAndNoLeftChildLeftNode() {
-        this.testRootNode.setLeft(new Node(3));
-        this.testRootNode.getLeft().setRight(new Node(4));
+        this.testRootBSTNode.setLeft(new BSTNode(3));
+        this.testRootBSTNode.getLeft().setRight(new BSTNode(4));
 
-        Node result = this.testBstRecursive.deleteRecursive(3, testRootNode.getLeft(), testRootNode);
+        BSTNode result = this.testBstRecursive.deleteRecursive(3, testRootBSTNode.getLeft(), testRootBSTNode);
 
         assertNotNull(result);
         assertEquals(3, result.getValue());
-        assertEquals(2, this.testBstRecursive.countRecursive(this.testRootNode));
-        assertEquals(4, this.testRootNode.getLeft().getValue());
+        assertEquals(2, this.testBstRecursive.countRecursive(this.testRootBSTNode));
+        assertEquals(4, this.testRootBSTNode.getLeft().getValue());
     }
 
     @Test
     public void testDeleteWithTwoChildrenNoMinLeftNode() {
-        this.testBstRecursive.insertRecursive(10, testRootNode);
-        this.testBstRecursive.insertRecursive(8, testRootNode);
-        this.testBstRecursive.insertRecursive(12, testRootNode);
-        this.testBstRecursive.insertRecursive(14, testRootNode);
+        this.testBstRecursive.insertRecursive(10, testRootBSTNode);
+        this.testBstRecursive.insertRecursive(8, testRootBSTNode);
+        this.testBstRecursive.insertRecursive(12, testRootBSTNode);
+        this.testBstRecursive.insertRecursive(14, testRootBSTNode);
         
-        Node result = this.testBstRecursive.deleteRecursive(10, testRootNode, null);
+        BSTNode result = this.testBstRecursive.deleteRecursive(10, testRootBSTNode, null);
 
         assertNotNull(result);
         assertEquals(10, result.getValue());
-        assertEquals(12, this.testRootNode.getRight().getValue());
-        assertEquals(8, this.testRootNode.getRight().getLeft().getValue());
-        assertNull(this.testRootNode.getRight().getRight().getLeft());
-        assertEquals(14, this.testRootNode.getRight().getRight().getValue());
+        assertEquals(12, this.testRootBSTNode.getRight().getValue());
+        assertEquals(8, this.testRootBSTNode.getRight().getLeft().getValue());
+        assertNull(this.testRootBSTNode.getRight().getRight().getLeft());
+        assertEquals(14, this.testRootBSTNode.getRight().getRight().getValue());
     }
 
     @Test
     public void testDeleteWithTwoChildrenMinLeftNode() {
-        this.testBstRecursive.insertRecursive(10, testRootNode);
-        this.testBstRecursive.insertRecursive(8, testRootNode);
-        this.testBstRecursive.insertRecursive(14, testRootNode);
-        this.testBstRecursive.insertRecursive(13, testRootNode);
-        this.testBstRecursive.insertRecursive(12, testRootNode);
+        this.testBstRecursive.insertRecursive(10, testRootBSTNode);
+        this.testBstRecursive.insertRecursive(8, testRootBSTNode);
+        this.testBstRecursive.insertRecursive(14, testRootBSTNode);
+        this.testBstRecursive.insertRecursive(13, testRootBSTNode);
+        this.testBstRecursive.insertRecursive(12, testRootBSTNode);
         
-        Node result = this.testBstRecursive.deleteRecursive(10, testRootNode, null);
+        BSTNode result = this.testBstRecursive.deleteRecursive(10, testRootBSTNode, null);
 
         assertNotNull(result);
         assertEquals(10, result.getValue());
-        assertEquals(12, this.testRootNode.getRight().getValue());
-        assertEquals(8, this.testRootNode.getRight().getLeft().getValue());
-        assertEquals(14, this.testRootNode.getRight().getRight().getValue());
-        assertEquals(13, this.testRootNode.getRight().getRight().getLeft().getValue());
+        assertEquals(12, this.testRootBSTNode.getRight().getValue());
+        assertEquals(8, this.testRootBSTNode.getRight().getLeft().getValue());
+        assertEquals(14, this.testRootBSTNode.getRight().getRight().getValue());
+        assertEquals(13, this.testRootBSTNode.getRight().getRight().getLeft().getValue());
     }
 }

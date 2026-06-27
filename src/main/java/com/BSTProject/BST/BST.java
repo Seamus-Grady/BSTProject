@@ -1,7 +1,9 @@
 package com.BSTProject.BST;
 
+import com.BSTProject.Node.BSTNode;
+
 public class BST {
-    private Node root;
+    private BSTNode root;
     private BSTRecursive bstRecursive;
     
     public BST() {
@@ -9,20 +11,24 @@ public class BST {
         this.bstRecursive = new BSTRecursive();
     }
 
+    public BSTNode getRoot() {
+        return this.root;
+    }
+
     public void insert(int value) {
         if(this.root == null) {
-            this.root = new Node(value);
+            this.root = new BSTNode(value);
             return;
         }
 
         this.bstRecursive.insertRecursive(value, root);
     }
 
-    public Node delete(int value) {
+    public BSTNode delete(int value) {
         return this.bstRecursive.deleteRecursive(value, root, null);
     }
 
-    public Node search(int value) {
+    public BSTNode search(int value) {
         return this.bstRecursive.searchRecursive(value, root);
     }
 
