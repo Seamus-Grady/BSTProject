@@ -1,40 +1,45 @@
 package com.BSTProject.BST;
+import com.BSTProject.Node.BSTNode;
 
 class BSTRecursive {
     
     public BSTRecursive() {}
 
-    public void insertRecursive(int value, Node node) {
-        if(value == node.getValue()) {
+    public void insertRecursive(int value, BSTNode BSTNode) {
+        if(value == BSTNode.getValue()) {
             return;
         }
-        if(node.getLeft() == null && isValueLessThanNodeValue(value, node)) {
-            node.setLeft(new Node(value));
+        if(BSTNode.getLeft() == null && isValueLessThanNodeValue(value, BSTNode)) {
+            BSTNode nodeToInsert = new BSTNode(value);
+            BSTNode.setLeft(nodeToInsert);
+            nodeToInsert.setParent(BSTNode);
             return;
         }
-        if(node.getRight() == null && !isValueLessThanNodeValue(value, node)) {
-            node.setRight(new Node(value));
+        if(BSTNode.getRight() == null && !isValueLessThanNodeValue(value, BSTNode)) {
+            BSTNode nodeToInsert = new BSTNode(value);
+            BSTNode.setRight(nodeToInsert);
+            nodeToInsert.setParent(BSTNode);
             return;
         } else {
-            if(isValueLessThanNodeValue(value, node)) {
-                insertRecursive(value, node.getLeft());
+            if(isValueLessThanNodeValue(value, BSTNode)) {
+                insertRecursive(value, BSTNode.getLeft());
             } else {
-                insertRecursive(value, node.getRight());
+                insertRecursive(value, BSTNode.getRight());
             }
         }
     }
 
-    public Node searchRecursive(int value, Node node) {
-        if(node == null) {
+    public BSTNode searchRecursive(int value, BSTNode BSTNode) {
+        if(BSTNode == null) {
             return null;
-        } else if(value == node.getValue()) {
-            return node;
+        } else if(value == BSTNode.getValue()) {
+            return BSTNode;
         }
 
-        return isValueLessThanNodeValue(value, node)? searchRecursive(value, node.getLeft()) : searchRecursive(value, node.getRight());
+        return isValueLessThanNodeValue(value, BSTNode)? searchRecursive(value, BSTNode.getLeft()) : searchRecursive(value, BSTNode.getRight());
     }
 
-    public Node deleteRecursive(int value, Node current, Node previous) {
+    public BSTNode deleteRecursive(int value, BSTNode current, BSTNode previous) {
         if(current == null) {
             return null;
         }
@@ -49,55 +54,55 @@ class BSTRecursive {
         return isValueLessThanNodeValue(value, current)? deleteRecursive(value, current.getLeft(), current) :  deleteRecursive(value, current.getRight(), current);
     }
 
-    public int countRecursive(Node node) {
-        if(node == null) {
+    public int countRecursive(BSTNode BSTNode) {
+        if(BSTNode == null) {
             return 0;
         }
 
-        return countRecursive(node.getLeft()) + 1 + countRecursive(node.getRight());
+        return countRecursive(BSTNode.getLeft()) + 1 + countRecursive(BSTNode.getRight());
     }
 
-    private boolean isLeaf(Node node) {
-        return node.getLeft() == null && node.getRight() == null;
+    private boolean isLeaf(BSTNode BSTNode) {
+        return BSTNode.getLeft() == null && BSTNode.getRight() == null;
     }
 
-    private boolean hasOnlyOneChild(Node node) { 
-        return (node.getLeft() == null) ^ (node.getRight() == null);
+    private boolean hasOnlyOneChild(BSTNode BSTNode) {
+        return (BSTNode.getLeft() == null) ^ (BSTNode.getRight() == null);
     }
 
-    private boolean isValueLessThanNodeValue(int value, Node node) {
-        return value < node.getValue();
+    private boolean isValueLessThanNodeValue(int value, BSTNode BSTNode) {
+        return value < BSTNode.getValue();
     }
 
-    private Node deleteLeafOrOneChild(int value, Node current, Node previous) {
-        Node nodeToSet = null;
+    private BSTNode deleteLeafOrOneChild(int value, BSTNode current, BSTNode previous) {
+        BSTNode BSTNodeToSet = null;
         if(hasOnlyOneChild(current)) {
-            nodeToSet = current.getLeft() != null? current.getLeft() : current.getRight();
+            BSTNodeToSet = current.getLeft() != null? current.getLeft() : current.getRight();
         }
 
         if(isValueLessThanNodeValue(value, previous)) {
-            previous.setLeft(nodeToSet);
+            previous.setLeft(BSTNodeToSet);
         } else {
-            previous.setRight(nodeToSet);
+            previous.setRight(BSTNodeToSet);
         }
         
         return current;
     }
 
-    private Node deleteWithTwoChildren(Node current, Node previous) {
-        Node nodeToDelete;
+    private BSTNode deleteWithTwoChildren(BSTNode current, BSTNode previous) {
+        BSTNode BSTNodeToDelete;
         if(current.getLeft() == null) {
             previous.setRight(current.getRight());
-            nodeToDelete = current;
+            BSTNodeToDelete = current;
         } else {
-            nodeToDelete = findAndDeleteMinNodeOnLeftSide(current.getLeft(), current);
+            BSTNodeToDelete = findAndDeleteMinNodeOnLeftSide(current.getLeft(), current);
         }
 
-        swapValueBetweenTwoNodes(previous, nodeToDelete);
-        return nodeToDelete;
+        swapValueBetweenTwoNodes(previous, BSTNodeToDelete);
+        return BSTNodeToDelete;
     }
 
-    private Node findAndDeleteMinNodeOnLeftSide(Node current, Node previous) {
+    private BSTNode findAndDeleteMinNodeOnLeftSide(BSTNode current, BSTNode previous) {
         if(current == null) { 
             return null;
         }
@@ -109,10 +114,10 @@ class BSTRecursive {
         }
     }
 
-    private void swapValueBetweenTwoNodes(Node node1, Node node2) {
-        int node1Value = node1.getValue();
-        node1.setValue(node2.getValue());
-        node2.setValue(node1Value);
+    private void swapValueBetweenTwoNodes(BSTNode BSTNode1, BSTNode BSTNode2) {
+        int node1Value = BSTNode1.getValue();
+        BSTNode1.setValue(BSTNode2.getValue());
+        BSTNode2.setValue(node1Value);
     }
     
 }

@@ -11,7 +11,7 @@ plugins {
 }
 
 group = 'com.BSTProject'
-version = '1.0.0'
+version = '2.0.0'
 
 publishing {
     repositories {
@@ -20,7 +20,7 @@ publishing {
             url= 'https://maven.pkg.github.com/Seamus-Grady/BSTProject'
             credentials {
                 username = 'Seamus-Grady'
-                password = System.getenv('GITHUB_PUBLISHING_TOKEN')
+                password = System.getenv('GITHUB_TOKEN')
             }
         }
     }
