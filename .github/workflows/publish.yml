@@ -1,0 +1,95 @@
+name: Publish with auto-versioning
+
+on:
+  pull_request:
+    branches: [master]
+    types:
+      - closed
+
+jobs:
+  version-and-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Find the last release tag
+        id: last-tag
+        run: |
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "none")
+          echo "tag=${LAST_TAG}" >> "$GITHUB_OUTPUT"
+
+      - name: Determine bump type from commits
+        id: bump
+        run: |
+          TAG="${{ steps.last-tag.outputs.tag }}"
+          
+          # If no previous tag exists, start at 0.1.0
+          if [[ "$TAG" == "none" ]]; then
+            echo "bump=none" >> "$GITHUB_OUTPUT"
+            echo "version=0.1.0" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          
+          # Parse semver from the tag (strip leading 'v')
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$(echo $TAG | sed 's/^v//')"
+          
+          # Get commit messages since last tag, excluding merges
+          COMMITS=$(git log "${TAG}..HEAD" --no-merges --pretty=format:'%s')
+          
+          BUMP="none"
+          
+          # Scan each line of commits (pipe-separated by git log)
+          while IFS= read -r msg; do
+            [[ -z "$msg" ]] && continue
+            case "$msg" in
+              *BREAKING*|*:!*   ) BUMP="major"; break ;;   # highest priority wins
+              feat(*:*)          ) [[ "$BUMP" != "major"  ]] && BUMP="minor" ;;
+              fix(:*)            ) [[ "$BUMP" == "none" ]]    && BUMP="patch" ;;
+            esac
+          done <<< "$COMMITS"
+          
+          case "$BUMP" in
+            major)   NEW_MAJOR=$((MAJOR + 1)); MINOR=0;  PATCH=0 ;;
+            minor)                        NEW_MINOR=$((MINOR + 1)); PATCH=0 ;;
+            patch)                                     NEW_PATCH=$((PATCH + 1)) ;;
+          esac
+          
+          NEW_VERSION="${NEW_MAJOR}.${NEW_MINOR}.${NEW_PATCH}"
+          echo "bump=${BUMP}" >> "$GITHUB_OUTPUT"
+          echo "version=${NEW_VERSION}" >> "$GITHUB_OUTPUT"
+          echo "Detected bump: ${BUMP} → ${TAG} → ${NEW_VERSION}"
+
+      - name: Show result
+        run: |
+          echo "Previous version: ${{ steps.last-tag.outputs.tag }}"
+          echo "New version:      ${{ steps.bump.outputs.version }}"
+          echo "Bump type:        ${{ steps.bump.outputs.bump }}"
+
+      - name: Setup JDK 25
+        uses: action/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '25'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: '9.6.0'
+
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
+
+      - name: Publish To Github Packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [[ "${{ steps.bump.outputs.version }}" != "0.1.0" ]]; then
+            ./gradlew publish -PpublishVersion="${{ steps.bump.outputs.version }}"
+          else
+            echo "No version bump needed — skipping publish."
+          fi
