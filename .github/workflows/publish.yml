@@ -96,7 +96,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if [[ "${{ steps.bump.outputs.version }}" != "0.1.0" ]]; then
+          # First publish (no prior tag) or a bump detected → publish
+          if [[ "${{ steps.last-tag.outputs.tag }}" == "none" || ${{ steps.bump.outputs.bump }} != "none" ]]; then
             ./gradlew publish -PpublishVersion="${{ steps.bump.outputs.version }}"
           else
             echo "No version bump needed — skipping publish."
@@ -104,7 +105,10 @@ jobs:
           fi
 
       - name: Create and push tag
-        if: steps.bump.outputs.version != '0.1.0' && (steps.bump.outputs.bump == 'major' || steps.bump.outputs.bump == 'minor' || steps.bump.outputs.bump == 'patch')
+        if: >-
+          success() &&
+          (steps.last-tag.outputs.tag == 'none' ||
+           steps.bump.outputs.bump != 'none')
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
