@@ -9,20 +9,19 @@ class BSTRecursive {
         if(value == BSTNode.getValue()) {
             return;
         }
-        if(BSTNode.getLeft() == null && isValueLessThanNodeValue(value, BSTNode)) {
-            BSTNode nodeToInsert = new BSTNode(value);
-            BSTNode.setLeft(nodeToInsert);
-            nodeToInsert.setParent(BSTNode);
-            return;
-        }
-        if(BSTNode.getRight() == null && !isValueLessThanNodeValue(value, BSTNode)) {
-            BSTNode nodeToInsert = new BSTNode(value);
-            BSTNode.setRight(nodeToInsert);
-            nodeToInsert.setParent(BSTNode);
-            return;
-        } else {
-            if(isValueLessThanNodeValue(value, BSTNode)) {
+        if(isValueLessThanNodeValue(value, BSTNode)) {
+            if(BSTNode.getLeft() == null) {
+                BSTNode nodeToInsert = new BSTNode(value);
+                BSTNode.setLeft(nodeToInsert);
+                nodeToInsert.setParent(BSTNode);
+            } else {
                 insertRecursive(value, BSTNode.getLeft());
+            }
+        } else {
+            if(BSTNode.getRight() == null) {
+                BSTNode nodeToInsert = new BSTNode(value);
+                BSTNode.setRight(nodeToInsert);
+                nodeToInsert.setParent(BSTNode);
             } else {
                 insertRecursive(value, BSTNode.getRight());
             }
