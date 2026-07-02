@@ -50,24 +50,21 @@ jobs:
           COMMITS=$(git log "${TAG}..HEAD" --no-merges --pretty=format:'%s')
           
           BUMP="none"
-          NEW_MAJOR="$MAJOR"
-          NEW_MINOR="$MINOR"
-          NEW_PATCH="$PATCH"
 
           # Scan each line of commits (pipe-separated by git log)
           while IFS= read -r msg; do
             [[ -z "$msg" ]] && continue
             case "$msg" in
-              *BREAKING*|*:!*   ) BUMP="major"; break ;;   # highest priority wins
-              *"feat\("*\)        ) [[ "$BUMP" != "major" ]] && BUMP="minor" ;;
-              *"fix\("*\)         ) [[ "$BUMP" == "none" ]]   && BUMP="patch" ;;
+              *BREAKING*|*:!*    ) BUMP="major"; break ;;   # highest priority wins
+              *"feat"*           ) [[ "$BUMP" != "major" ]] && BUMP="minor" ;;
+              *"fix"*            ) [[ "$BUMP" == "none" ]]  && BUMP="patch" ;;
             esac
           done <<< "$COMMITS"
-          
+
           case "$BUMP" in
-            major)   NEW_MAJOR=$((MAJOR + 1)); MINOR=0;  PATCH=0 ;;
-            minor)                        NEW_MINOR=$((MINOR + 1)); PATCH=0 ;;
-            patch)                                     NEW_PATCH=$((PATCH + 1)) ;;
+            major)   NEW_MAJOR=$((MAJOR + 1)); NEW_MINOR=0;  NEW_PATCH=0 ;;
+            minor)                        NEW_MINOR=$((MINOR + 1)); NEW_PATCH=0 ;;
+            patch)                                                 NEW_PATCH=$((PATCH + 1)) ;;
           esac
           
           NEW_VERSION="${NEW_MAJOR}.${NEW_MINOR}.${NEW_PATCH}"
