@@ -25,7 +25,7 @@ public class BST {
     }
 
     public BSTNode delete(int value) {
-        return this.bstRecursive.deleteRecursive(value, root, null);
+        return this.bstRecursive.deleteRecursive(value, root);
     }
 
     public BSTNode search(int value) {
