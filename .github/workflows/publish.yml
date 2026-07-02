@@ -50,7 +50,10 @@ jobs:
           COMMITS=$(git log "${TAG}..HEAD" --no-merges --pretty=format:'%s')
           
           BUMP="none"
-          
+          NEW_MAJOR="$MAJOR"
+          NEW_MINOR="$MINOR"
+          NEW_PATCH="$PATCH"
+
           # Scan each line of commits (pipe-separated by git log)
           while IFS= read -r msg; do
             [[ -z "$msg" ]] && continue
