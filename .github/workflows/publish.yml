@@ -56,8 +56,8 @@ jobs:
             [[ -z "$msg" ]] && continue
             case "$msg" in
               *BREAKING*|*:!*   ) BUMP="major"; break ;;   # highest priority wins
-              feat\(*\)          ) [[ "$BUMP" != "major"  ]] && BUMP="minor" ;;
-              fix\(*\)           ) [[ "$BUMP" == "none" ]]    && BUMP="patch" ;;
+              *"feat\("*\)        ) [[ "$BUMP" != "major" ]] && BUMP="minor" ;;
+              *"fix\("*\)         ) [[ "$BUMP" == "none" ]]   && BUMP="patch" ;;
             esac
           done <<< "$COMMITS"
           
@@ -97,7 +97,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # First publish (no prior tag) or a bump detected → publish
-          if [[ "${{ steps.last-tag.outputs.tag }}" == "none" || ${{ steps.bump.outputs.bump }} != "none" ]]; then
+          if [[ "${{ steps.last-tag.outputs.tag }}" == "none" || "${{ steps.bump.outputs.bump }}" != "none" ]]; then
             ./gradlew publish -PpublishVersion="${{ steps.bump.outputs.version }}"
           else
             echo "No version bump needed — skipping publish."
