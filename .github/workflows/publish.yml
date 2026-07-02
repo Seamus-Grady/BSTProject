@@ -61,6 +61,10 @@ jobs:
             esac
           done <<< "$COMMITS"
 
+          NEW_MAJOR=$MAJOR
+          NEW_MINOR=$MINOR
+          NEW_PATCH=$PATCH
+
           case "$BUMP" in
             major)   NEW_MAJOR=$((MAJOR + 1)); NEW_MINOR=0;  NEW_PATCH=0 ;;
             minor)                        NEW_MINOR=$((MINOR + 1)); NEW_PATCH=0 ;;
