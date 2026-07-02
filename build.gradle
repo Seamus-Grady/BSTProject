@@ -11,6 +11,7 @@ plugins {
 }
 
 group = 'com.BSTProject'
+version = project.findProperty('publishVersion') ?: 'SNAPSHOT'
 
 publishing {
     repositories {
